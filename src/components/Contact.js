@@ -6,11 +6,12 @@ const Contact = () => {
       <div className="container">
         <div className="contact-inner">
           <p className="section-label">Contact</p>
-          <h2 className="section-title">함께 만들어 갑시다</h2>
+          <h2 className="section-title">Let's Build Together</h2>
           <div className="section-divider" style={{ margin: "0 auto 32px" }} />
           <p className="section-desc">
-            데이터 분석 프로젝트, 소프트웨어 개발, 기술 자문 — 어떤 형태든
-            먼저 이야기해요. 지속 가능한 미래를 위한 협업을 환영합니다.
+            Data analysis projects, software development, technical consulting —
+            whatever the form, let's talk first. Collaboration toward a sustainable
+            future is always welcome.
           </p>
           <div className="contact-cards">
             <a
@@ -30,8 +31,8 @@ const Contact = () => {
             </a>
           </div>
           <p className="contact-cta">
-            프로젝트 문의는 언제든지 환영합니다 →{" "}
-            <a href="mailto:bjornlab@gmail.com">메일 보내기</a>
+            Project inquiries are always welcome →{" "}
+            <a href="mailto:bjornlab@gmail.com">Send a message</a>
           </p>
         </div>
       </div>

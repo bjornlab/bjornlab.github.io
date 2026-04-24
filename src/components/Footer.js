@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-logo">bjornlab</div>
       <p className="footer-tagline">
-        지속 가능한 미래를 위해 — 데이터를 분석하고 예측하며 설계합니다
+        For a sustainable future — analyzing, predicting, and designing with data.
       </p>
       <nav className="footer-links" aria-label="Footer navigation">
         <a href="#about">About</a>

@@ -67,11 +67,11 @@ const Stack = () => {
       <div className="container">
         <div className="stack-intro">
           <p className="section-label">Tech Stack</p>
-          <h2 className="section-title">20년을 쌓아온 기술들</h2>
+          <h2 className="section-title">20 Years of Accumulated Tools</h2>
           <div className="section-divider" />
           <p className="section-desc">
-            데이터 수집부터 분석, 시각화, 배포까지 — 전체 데이터 파이프라인을
-            직접 설계하고 구현합니다.
+            From data collection to analysis, visualization, and deployment —
+            designing and implementing the entire data pipeline end-to-end.
           </p>
         </div>
         <div className="stack-categories">
