@@ -24,15 +24,15 @@ const Contact = () => {
               <p className="contact-card-label">GitHub</p>
               <p className="contact-card-value">github.com/bjornlab</p>
             </a>
-            <a href="mailto:bjornlab@gmail.com" className="contact-card">
+            <a href="mailto:bjornlab@outlook.com" className="contact-card">
               <span className="contact-card-icon">✉️</span>
               <p className="contact-card-label">Email</p>
-              <p className="contact-card-value">bjornlab@gmail.com</p>
+              <p className="contact-card-value">bjornlab@outlook.com</p>
             </a>
           </div>
           <p className="contact-cta">
             Project inquiries are always welcome →{" "}
-            <a href="mailto:bjornlab@gmail.com">Send a message</a>
+            <a href="mailto:bjornlab@outlook.com">Send a message</a>
           </p>
         </div>
       </div>

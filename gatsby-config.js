@@ -5,7 +5,7 @@ module.exports = {
       "A one-person software studio analyzing, predicting, and designing a sustainable future through data.",
     author: "Bjorn Lab",
     siteUrl: "https://bjornlab.github.io",
-    email: "bjornlab@gmail.com",
+    email: "bjornlab@outlook.com",
     github: "https://github.com/bjornlab",
   },
   plugins: [
