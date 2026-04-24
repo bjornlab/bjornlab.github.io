@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bjorn Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0a0c0f;
+      --bg2:       #10141a;
+      --surface:   #151b24;
+      --border:    #1e2a38;
+      --accent:    #4a9eff;
+      --accent2:   #7ec8e3;
+      --gold:      #c8a96e;
+      --text:      #e8edf2;
+      --muted:     #6b7f94;
+      --dim:       #3a4a5c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.15s ease, width 0.2s, height 0.2s, opacity 0.2s;
+      opacity: 0.5;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,158,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,158,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Noise overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Radial glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(ellipse, rgba(74,158,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .bear-rune {
+      font-size: clamp(4rem, 12vw, 9rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.2s forwards;
+      filter: drop-shadow(0 0 40px rgba(74,158,255,0.3));
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 8vw, 7rem);
+      letter-spacing: 0.12em;
+      line-height: 1;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 1s ease 0.4s forwards;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+      text-shadow: 0 0 60px rgba(74,158,255,0.5);
+    }
+
+    .hero-subtitle-kr {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.6s forwards;
+    }
+
+    .hero-tagline {
+      margin-top: 2.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.8s forwards;
+    }
+
+    .hero-tagline::before { content: '// '; color: var(--dim); }
+
+    .rune-divider {
+      margin-top: 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 1s forwards;
+    }
+
+    .rune-divider::before,
+    .rune-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      width: 80px;
+    }
+
+    .rune-char {
+      font-family: 'Cinzel', serif;
+      color: var(--dim);
+      font-size: 1.1rem;
+      letter-spacing: 0.4em;
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.5s forwards;
+    }
+
+    .scroll-hint span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--dim);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before { content: '⟡ '; }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: 0.08em;
+      margin-bottom: 2.5rem;
+      color: var(--text);
+    }
+
+    /* ── NAME MEANING ── */
+    .meaning-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .meaning-card {
+      background: var(--surface);
+      padding: 2rem 1.8rem;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .meaning-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .meaning-card:hover { background: var(--bg2); }
+    .meaning-card:hover::before { opacity: 1; }
+
+    .meaning-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .meaning-en {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+    }
+
+    .meaning-kr {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      margin-bottom: 0.8rem;
+    }
+
+    .meaning-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text);
+      opacity: 0.8;
+    }
+
+    /* bear connection */
+    .bear-connection {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 2;
+      color: var(--muted);
+    }
+
+    .bear-connection .highlight { color: var(--gold); }
+    .bear-connection .comment { color: var(--dim); }
+
+    /* ── STACK ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .stack-item {
+      background: var(--surface);
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .stack-item:hover { background: var(--bg2); }
+
+    .stack-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+
+    .stack-item p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text);
+      opacity: 0.75;
+    }
+
+    /* ── ABOUT ── */
+    .about-text {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      line-height: 1.9;
+      color: var(--text);
+      opacity: 0.8;
+      border-left: 2px solid var(--accent);
+      padding-left: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .about-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .meta-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.4rem 1rem;
+      background: var(--surface);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--text);
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--dim);
+      letter-spacing: 0.15em;
+      width: 100%;
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+      margin: 0 auto;
+      max-width: 900px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.2); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      section { padding: 4rem 1.5rem; }
+      .meaning-grid { grid-template-columns: 1fr; }
+      .bear-connection { padding: 1.5rem; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="bear-rune">🐻</div>
+    <h1 class="hero-title"><span>BJORN</span> LAB</h1>
+    <p class="hero-tagline">beyond the horizon, one commit at a time</p>
+    <div class="rune-divider">
+      <span class="rune-char">ᛒ &nbsp; ᛃ &nbsp; ᛟ &nbsp; ᚱ &nbsp; ᚾ</span>
+    </div>
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- NAME MEANING -->
+  <section>
+    <div class="section-label reveal">The Name</div>
+    <h2 class="reveal">Three Names, One Bear</h2>
+
+    <div class="meaning-grid reveal">
+      <div class="meaning-card">
+        <span class="meaning-icon">🐻</span>
+        <div class="meaning-en">BJORN</div>
+        <div class="meaning-kr">Old Norse · "Bear"</div>
+        <p class="meaning-desc">My alter ego. Bridged from my given name through sound — a Norse warrior's name that carries strength and craftsmanship.</p>
+      </div>
+      <div class="meaning-card">
+        <span class="meaning-icon">🚀</span>
+        <div class="meaning-en">BEYOND</div>
+        <div class="meaning-kr">Direction · Future</div>
+        <p class="meaning-desc">Hear "Bjorn" and "Beyond" follows naturally. A sustainable future, past every boundary — the name hides the mission inside it.</p>
+      </div>
+      <div class="meaning-card">
+        <span class="meaning-icon">🔬</span>
+        <div class="meaning-en">LAB</div>
+        <div class="meaning-kr">Workshop · Studio</div>
+        <p class="meaning-desc">A craftsman's workshop. A place to keep building what I love — long after the career ends, the curiosity doesn't.</p>
+      </div>
+    </div>
+
+    <div class="bear-connection reveal">
+      <span class="comment">// all roads lead to the bear</span><br><br>
+      Ted &nbsp;&nbsp;→ Teddy → Teddy Bear &nbsp;<span class="highlight">🧸</span>&nbsp; <span class="comment">// Roosevelt refused to shoot a bear, 1902</span><br>
+      Bjorn → björn &nbsp;→ Old Norse "bear" &nbsp;<span class="highlight">🐻</span>&nbsp; <span class="comment">// name of Viking warriors</span><br><br>
+      <span class="highlight">Two names. One bear. Not a coincidence.</span>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="section-label reveal">About</div>
+    <h2 class="reveal">The Studio</h2>
+    <p class="about-text reveal">
+      A one-person software studio run by Ted Hwang.<br>
+      20+ years of backend engineering. M.S. from KAIST Graduate School of Future Strategy.<br>
+      Built so the craft continues — long after the career does.
+    </p>
+    <div class="about-meta reveal">
+      <span class="meta-chip">Digital Twin</span>
+      <span class="meta-chip">AR / Robot / Vision</span>
+      <span class="meta-chip">MLOps</span>
+      <span class="meta-chip">Backend &amp; Data Pipeline</span>
+      <span class="meta-chip">LLM / Time-series</span>
+      <span class="meta-chip">Sustainable Future</span>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- STACK -->
+  <section>
+    <div class="section-label reveal">Tech</div>
+    <h2 class="reveal">Tech Stack</h2>
+    <div class="stack-grid reveal">
+      <div class="stack-item">
+        <div class="stack-category">Backend</div>
+        <p>Python · Go · Java<br>REST / gRPC · DB / Cache</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-category">MLOps / AI</div>
+        <p>Ollama · LLM Pipeline<br>Time-series · RAG</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-category">Infrastructure</div>
+        <p>Cloud · Docker · K8s<br>Tailscale · CI/CD</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-category">Domain</div>
+        <p>Digital Twin · Robot<br>Vision · AR · FinTech</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><span>BJORN</span> LAB</div>
+    <div class="footer-links">
+      <a href="https://github.com/bjornlab" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 Bjorn Lab · Ted Hwang &nbsp;|&nbsp; Built with 🐻 and curiosity
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx - 4 + 'px';
+      cursor.style.top  = my - 4 + 'px';
+    });
+
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    document.querySelectorAll('a, .meaning-card, .stack-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '48px';
+        ring.style.height = '48px';
+        ring.style.opacity = '0.8';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '32px';
+        ring.style.height = '32px';
+        ring.style.opacity = '0.5';
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
