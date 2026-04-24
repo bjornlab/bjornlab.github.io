@@ -1,0 +1,27 @@
+{
+  "name": "bjornlab.github.io",
+  "version": "1.0.0",
+  "description": "Bjorn Lab - 지속 가능한 미래를 위한 소프트웨어 개발 & 데이터 분석 스튜디오",
+  "main": "index.js",
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "deploy": "gatsby build && touch public/.nojekyll"
+  },
+  "keywords": ["gatsby", "data-analysis", "software-studio"],
+  "author": "Bjorn Lab",
+  "license": "MIT",
+  "dependencies": {
+    "gatsby": "^5.16.1",
+    "gatsby-plugin-image": "^3.16.0",
+    "gatsby-plugin-react-helmet": "^6.16.0",
+    "gatsby-plugin-sharp": "^5.16.0",
+    "gatsby-transformer-sharp": "^5.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-helmet": "^6.1.0"
+  }
+}
