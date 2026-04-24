@@ -1,7 +1,7 @@
 {
   "name": "bjornlab.github.io",
   "version": "1.0.0",
-  "description": "Bjorn Lab - 지속 가능한 미래를 위한 소프트웨어 개발 & 데이터 분석 스튜디오",
+  "description": "Bjorn Lab - A software development & data analysis studio for a sustainable future",
   "main": "index.js",
   "scripts": {
     "develop": "gatsby develop",
